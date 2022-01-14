@@ -6,11 +6,22 @@ import axios from 'axios';
 function MyApp() {
     const [characters, setCharacters] = useState([]);
 
-    function removeOneCharacter (index) {
-        const updated = characters.filter((character, i) => {
-            return i !== index
-      });
-      setCharacters(updated);
+    async function removeOneCharacter (index) {
+      try{
+        const result = await axios.delete('http://localhost:5000/users/' + characters[index].id);
+        if (result.status === 204){
+          const updated = characters.filter((character, i) => {
+                return i !== index
+          });
+          setCharacters(updated);
+        }
+      }
+      catch (error){
+        //We're not handling errors. Just logging into the console.
+        console.log(error); 
+        return false;         
+     }
+     
     }
 
     function updateList(person) { 
